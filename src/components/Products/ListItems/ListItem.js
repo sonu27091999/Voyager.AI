@@ -26,6 +26,7 @@ const ListItem = (props) => {
                 <div className='title'>
                     <h3>{props.data.title}</h3>
                 </div>
+                <button onClick={()=>props.updateIemTitle(props.data.id)}>Update the title</button>
                 {
                     counter < 1 ?
                         <button className='cart-add' onClick={increaseCounterByOne}>
