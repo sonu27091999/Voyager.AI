@@ -1,16 +1,19 @@
-import React from 'react'
+import ReactDom from 'react-dom'
 
 const Loader = () => {
     return (
-        <>
-            <div className="loader-overlay"></div>
-            <div className="loading-dots">
-                <div>Loading</div>
-                <div className="loading-dots--dot"></div>
-                <div className="loading-dots--dot"></div>
-                <div className="loading-dots--dot"></div>
-            </div>
-        </>
+        ReactDom.createPortal(
+            <>
+                <div className="loader-overlay"></div>
+                <div className="loading-dots">
+                    <div>Loading</div>
+                    <div className="loading-dots--dot"></div>
+                    <div className="loading-dots--dot"></div>
+                    <div className="loading-dots--dot"></div>
+                </div>
+            </>,
+            document.getElementById('loader-root')
+        )
     )
 }
 
