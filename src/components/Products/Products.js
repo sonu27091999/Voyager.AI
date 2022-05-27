@@ -4,9 +4,10 @@ import { useState, useEffect } from 'react';
 import axios from 'axios'
 import Loader from '../UI/Loader';
 
-const Products = () => {
+const Products = ({ onAddItem, onRemoveItem }) => {
     const [items, setItems] = useState([]);
     const [loader, setLoader] = useState(true);
+    const [presentItem, setPresentItem] = useState([]);
 
 
     useEffect(() => {
@@ -34,6 +35,24 @@ const Products = () => {
         }
         fecthItem();
     }, [])
+    const handleAddItem=(id)=>{
+        // console.log('Adding item ',id);
+        if(presentItem.indexOf(id)>-1){
+            return;
+        }
+        setPresentItem([...presentItem,id]);
+        onAddItem(); 
+    }
+    const handleRemoveItem=(id)=>{
+        // console.log('Removing item ',id);
+        let index=presentItem.indexOf(id);
+        if(index>-1){
+            let item=[...presentItem];
+            item.splice(index,1);
+            setPresentItem([...item]);
+            onRemoveItem(); 
+        }
+    }
 
     return (
         <>
@@ -44,7 +63,7 @@ const Products = () => {
                     {/* {[<div>hello div</div>,<p>hello p</p>]} */}
                     {
                         items.map((item) => {
-                            return <ListItem key={item.id} data={item} />
+                            return <ListItem onAdd={handleAddItem} onRemove={handleRemoveItem} key={item.id} data={item} />
                         })
                     }
                 </div>

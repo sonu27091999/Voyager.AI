@@ -8,12 +8,16 @@ const ListItem = (props) => {
     const [showModal, setShowModal] = useState(false);
     const increaseCounterByOne = (e) => {
         e.stopPropagation();
+        props.onAdd(props.data.id);
         setCounter(counter + 1);
     }
     const decreaseCounteByOne = (e) => {
         e.stopPropagation();
         if (counter === 0) {
             return;
+        }
+        if(counter===1){
+            props.onRemove(props.data.id);
         }
         setCounter(counter - 1);
     }
