@@ -4,10 +4,9 @@ import { useState, useEffect } from 'react';
 import axios from 'axios'
 import Loader from '../UI/Loader';
 
-const Products = ({ onAddItem, onRemoveItem }) => {
+const Products = ({ onAddItem, onRemoveItem, eventState }) => {
     const [items, setItems] = useState([]);
     const [loader, setLoader] = useState(true);
-    const [presentItem, setPresentItem] = useState([]);
 
 
     useEffect(() => {
@@ -35,14 +34,21 @@ const Products = ({ onAddItem, onRemoveItem }) => {
             }
         }
         fecthItem();
-    }, [])
+    }, []);
+
+    useEffect(() => {
+        if (eventState.id > -1) {
+            if (eventState.type === 1) {
+                handleAddItem(eventState.id);
+            }
+            else if(eventState.type===-1) {
+                handleRemoveItem(eventState.id);
+            }
+        }
+    }, [eventState])
+
+
     const handleAddItem = (id) => {
-        // console.log('Adding item ', id);
-        // if(presentItem.indexOf(id)>-1){
-        //     return;
-        // }
-        // setPresentItem([...presentItem,id]);
-        // onAddItem(); 
         let data = [...items];
         let index = data.findIndex(i => i.id === id);
         data[index].quantity += 1;
@@ -50,20 +56,12 @@ const Products = ({ onAddItem, onRemoveItem }) => {
         onAddItem(data[index]);
     }
     const handleRemoveItem = (id) => {
-        // console.log('Removing item ', id);
-        // let index=presentItem.indexOf(id);
-        // if(index>-1){
-        //     let item=[...presentItem];
-        //     item.splice(index,1);
-        //     setPresentItem([...item]);
-        //     onRemoveItem(); 
-        // }
         let data = [...items];
         let index = data.findIndex(i => i.id === id);
         if (data[index].quantity !== 0) {
             data[index].quantity -= 1;
             setItems([...data]);
-            onRemoveItem(data[index]); 
+            onRemoveItem(data[index]);
         }
     }
 
