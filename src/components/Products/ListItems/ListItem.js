@@ -4,22 +4,23 @@ import { useState } from 'react';
 import Modal from '../../UI/Modal';
 
 const ListItem = (props) => {
-    const [counter, setCounter] = useState(0);
+    // const [counter, setCounter] = useState(0);
     const [showModal, setShowModal] = useState(false);
     const increaseCounterByOne = (e) => {
         e.stopPropagation();
         props.onAdd(props.data.id);
-        setCounter(counter + 1);
+        // setCounter(counter + 1);
     }
     const decreaseCounteByOne = (e) => {
         e.stopPropagation();
-        if (counter === 0) {
-            return;
-        }
-        if(counter===1){
-            props.onRemove(props.data.id);
-        }
-        setCounter(counter - 1);
+        props.onRemove(props.data.id);
+        // if (counter === 0) {
+        //     return;
+        // }
+        // if(counter===1){
+        //     props.onRemove(props.data.id);
+        // }
+        // setCounter(counter - 1);
     }
     const handleModal = () => {
         setShowModal(previousState => !previousState);
@@ -39,7 +40,7 @@ const ListItem = (props) => {
                         <h3>{props.data.title}</h3>
                     </div>
                     {
-                        counter < 1 ?
+                        props.data.quantity < 1 ?
                             <button className='cart-add' onClick={increaseCounterByOne}>
                                 <span>Add to Cart</span>
                                 <img src={AddToCartIcon} alt="Cart Icon" />
@@ -47,7 +48,7 @@ const ListItem = (props) => {
                             :
                             <div className='cart-addon'>
                                 <button onClick={decreaseCounteByOne}><span>-</span></button>
-                                <span className="counter">{counter}</span>
+                                <span className="counter">{props.data.quantity}</span>
                                 <button onClick={increaseCounterByOne}><span>+</span></button>
                             </div>
                     }
@@ -69,7 +70,7 @@ const ListItem = (props) => {
                             </div>
                             <p>{props.data.description}</p>
                             {
-                                counter < 1 ?
+                                props.data.quantity < 1 ?
                                     <button className='cart-add' onClick={increaseCounterByOne}>
                                         <span>Add to Cart</span>
                                         <img src={AddToCartIcon} alt="Cart Icon" />
@@ -77,7 +78,7 @@ const ListItem = (props) => {
                                     :
                                     <div className='cart-addon'>
                                         <button onClick={decreaseCounteByOne}><span>-</span></button>
-                                        <span className="counter">{counter}</span>
+                                        <span className="counter">{props.data.quantity}</span>
                                         <button onClick={increaseCounterByOne}><span>+</span></button>
                                     </div>
                             }
