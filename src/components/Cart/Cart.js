@@ -1,12 +1,18 @@
 import { Fragment, useState } from "react"
 import Modal from "../UI/Modal"
+import OrderSuccessModal from "../UI/OrderSuccess";
 import CartItem from "./CartItem"
 
 const Cart = ({ count, items, onHandleEventQueue }) => {
-  const [showModal, setShowModal] = useState(false)
+  const [showModal, setShowModal] = useState(false);
+  const [orderModal, setOrderModal] = useState(false);
 
   const handleModal = () => {
-    setShowModal(previousState => !previousState)
+    setShowModal(previousState => !previousState);
+  }
+  const handleOrderModal=()=>{
+    setShowModal(false);
+    setOrderModal(previousState => !previousState);
   }
 
   return (
@@ -53,11 +59,14 @@ const Cart = ({ count, items, onHandleEventQueue }) => {
                     <span style={{ marginLeft: "4px" }}>INR</span>
                   </h4>
                 </div>
-                <button>Order Now</button>
+                <button onClick={handleOrderModal}>Order Now</button>
               </div>
             }
           </div>
         </Modal>
+      }
+      {
+        orderModal&&<OrderSuccessModal onClose={handleModal}/>
       }
     </Fragment>
   )
