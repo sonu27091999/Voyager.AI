@@ -3,32 +3,25 @@ import AddToCartIcon from "../../../assets/icons/add_cart.svg"
 import { useState } from 'react';
 import Modal from '../../UI/Modal';
 import { useDispatch, useSelector } from 'react-redux';
+import {addItemHandler,removeItemHandler} from '../../../actions'
 
 const ListItem = (props) => {
     const [showModal, setShowModal] = useState(false);
     let item = useSelector(state => state.items.find(item => item.id === props.data.id));
     let dispatch=useDispatch();
+
     const increaseCounterByOne = (e) => {
         e.stopPropagation();
-        dispatch({
-            type:'ADD_ITEM',
-            payload:{
-                item:props.data
-            }
-        })
+        dispatch(addItemHandler(props.data));
     }
     const decreaseCounteByOne = (e) => {
         e.stopPropagation();
-        dispatch({
-            type:'REMOVE_ITEM',
-            payload:{
-                id:props.data.id
-            }
-        })
+        dispatch(removeItemHandler(props.data.id));
     }
     const handleModal = () => {
         setShowModal(previousState => !previousState);
     }
+    
     return (
         <Fragment>
             <div onClick={handleModal} className='item-card'>
