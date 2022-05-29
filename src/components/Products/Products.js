@@ -17,7 +17,6 @@ const Products = ({ onAddItem, onRemoveItem, eventState }) => {
                 const transformedData = data.map((item, index) => {
                     return {
                         ...item,
-                        quantity: 0,
                         id: index
                     }
                 })
