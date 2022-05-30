@@ -1,33 +1,28 @@
 import { Fragment, useState } from "react"
-import { useDispatch, useSelector } from "react-redux";
 import Modal from "../UI/Modal"
-import OrderSuccessModal from "../UI/OrderSuccess";
 import CartItem from "./CartItem"
-import { addItemHandler, clearCartHandler, removeItemHandler } from "../../actions"
+import OrderSuccessModal from "../UI/OrderSuccess"
+import { connect } from "react-redux"
+import { addItemHandler, removeItemHandler, clearCartHandler } from "../../actions"
 
-const Cart = () => {
-  const [showModal, setShowModal] = useState(false);
-  const [orderModal, setOrderModal] = useState(false);
-  const items = useSelector(state => state.items);
-  const totalAmount = useSelector(state => state.totalAmount);
-  const dispatch = useDispatch();
+const Cart = ({
+  items,
+  totalAmount,
+  addItemHandler,
+  removeItemHandler,
+  clearCartHandler
+}) => {
+  const [showModal, setShowModal] = useState(false)
+  const [orderModal, setOrderModal] = useState(false)
 
   const handleModal = () => {
-    setShowModal(previousState => !previousState);
-    setOrderModal(false);
+    setShowModal(previousState => !previousState)
   }
+
   const handleOrderModal = () => {
     setShowModal(false);
-    dispatch(clearCartHandler())
-    setOrderModal(previousState => !previousState);
-  }
-  const dispatchEvents = (type, item) => {
-    if (type === 1) {
-      dispatch(addItemHandler(item))
-    }
-    else if (type === -1) {
-      dispatch(removeItemHandler(item.id))
-    }
+    clearCartHandler()
+    setOrderModal(previous => !previous)
   }
 
   return (
@@ -54,7 +49,14 @@ const Cart = () => {
               {
                 items.length > 0 ?
                   items.map(item => {
-                    return (<CartItem key={item.id} data={item} onEmitDecreaseItem={item => dispatchEvents(-1, item)} onEmitIncreaseItem={item => dispatchEvents(1, item)} />)
+                    return (
+                      <CartItem
+                        data={item}
+                        onEmitIncreaseItem={() => addItemHandler(item)}
+                        onEmitDecreaseItem={() => removeItemHandler(item.id)}
+                        key={item.id}
+                      />
+                    )
                   })
                   :
                   <div className="empty-cart">Please add something in your cart!</div>
@@ -76,11 +78,22 @@ const Cart = () => {
           </div>
         </Modal>
       }
-      {
-        orderModal && <OrderSuccessModal onClose={handleModal} />
-      }
+      {orderModal && <OrderSuccessModal onClose={handleOrderModal} />}
     </Fragment>
   )
 }
 
-export default Cart
+const mapStateToProps = (state) => {
+  return {
+    items: state.items,
+    totalAmount: state.totalAmount
+  }
+}
+
+const mapDispatchToProps = {
+  addItemHandler,
+  removeItemHandler,
+  clearCartHandler
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Cart)
