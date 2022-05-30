@@ -1,8 +1,8 @@
 import { Fragment, useState } from "react"
-import { useDispatch, useSelector } from "react-redux";
 import Modal from "../UI/Modal"
-import OrderSuccessModal from "../UI/OrderSuccess";
 import CartItem from "./CartItem"
+import OrderSuccessModal from "../UI/OrderSuccess"
+import { useDispatch, useSelector } from "react-redux"
 import { addItemHandler, clearCartHandler, removeItemHandler } from "../../actions"
 
 const Cart = () => {
@@ -14,7 +14,6 @@ const Cart = () => {
 
   const handleModal = () => {
     setShowModal(previousState => !previousState);
-    setOrderModal(false);
   }
   const handleOrderModal = () => {
     setShowModal(false);
@@ -54,7 +53,14 @@ const Cart = () => {
               {
                 items.length > 0 ?
                   items.map(item => {
-                    return (<CartItem key={item.id} data={item} onEmitDecreaseItem={item => dispatchEvents(-1, item)} onEmitIncreaseItem={item => dispatchEvents(1, item)} />)
+                    return (
+                      <CartItem
+                        data={item}
+                        onEmitIncreaseItem={item => dispatchEvents(1, item)}
+                        onEmitDecreaseItem={item => dispatchEvents(-1, item)}
+                        key={item.id}
+                      />
+                    )
                   })
                   :
                   <div className="empty-cart">Please add something in your cart!</div>
@@ -76,9 +82,7 @@ const Cart = () => {
           </div>
         </Modal>
       }
-      {
-        orderModal && <OrderSuccessModal onClose={handleModal} />
-      }
+      {orderModal && <OrderSuccessModal onClose={handleOrderModal} />}
     </Fragment>
   )
 }
