@@ -14,7 +14,7 @@ function App() {
         <Route path="/" element={<Products />}>
           <Route path=":category" element={<Products />} />
         </Route>
-        {['login', 'signup'].map(path => <Route path={path} element={<AuthIndex path={path}/>} />)}
+        {['login', 'signup'].map((path,index) => <Route path={path} key={index} element={<AuthIndex path={path}/>} />)}
         <Route path="*" element={<h2>404 Not found</h2>}></Route>
       </Routes>
     </div>
