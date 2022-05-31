@@ -7,7 +7,7 @@ import {addItemHandler,removeItemHandler} from '../../../actions'
 
 const ListItem = (props) => {
     const [showModal, setShowModal] = useState(false);
-    let item = useSelector(state => state.items.find(item => item.id === props.data.id));
+    let item = useSelector(state => state.cart.items.find(item => item.id === props.data.id));
     let dispatch=useDispatch();
 
     const increaseCounterByOne = (e) => {

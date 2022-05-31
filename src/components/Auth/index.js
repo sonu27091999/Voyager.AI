@@ -1,43 +1,71 @@
-import React, { useState } from 'react'
-import { NavLink } from 'react-router-dom'
-import axios from 'axios'
+import React, { useState,useEffect } from 'react'
+import { useDispatch } from 'react-redux'
+import { NavLink, useNavigate } from 'react-router-dom'
 import Loader from '../UI/Loader'
+import { loginWithEmailAndPassword, signupWithEmailPassword } from '../../actions/auth'
 
 const AuthIndex = ({ path }) => {
     const [details, setDetails] = useState({
         email: '',
         password: ''
     })
+    const navigate = useNavigate();
     const [loader, setLoader] = useState(false)
+    const dispatch = useDispatch();
+
     const handleInput = (e) => {
         setDetails({
             ...details,
             [e.target.name]: e.target.value
         })
     }
+
+    useEffect(() => {      
+      return () => {
+        return ()=>{                 // cleanup code for unwanted memory leaks
+            setLoader(false);
+            setDetails({
+                email:'',
+                password:''
+            })
+        }
+      }
+    }, [])
+    
+
     const handleSubmission = (e) => {
         e.preventDefault();
-        console.log(details);
+        // console.log(details);
         if (path === 'signup') {
-            signupWithEmailPassword();
+            setLoader(true);
+            dispatch(signupWithEmailPassword(details, (data) => {
+                if (data.error) {
+                    console.log(data.error);
+                    alert(data?.response?.data?.error?.message || 'Some error occured');
+                }
+                else {
+                    console.log('Successfully signed up');
+                    navigate('/');
+                }
+                setLoader(false);
+            }));
+        }
+        else if (path === 'login') {
+            setLoader(true);
+            dispatch(loginWithEmailAndPassword(details, (data) => {
+                if (data.error) {
+                    console.log(data.error);
+                    alert(data?.response?.data?.error?.message || 'Some error occured');
+                }
+                else {
+                    console.log('Successfully logged in');
+                    navigate('/');
+                }
+                setLoader(false);
+            }));
         }
     }
 
-    const signupWithEmailPassword = async () => {
-        setLoader(true);
-        try {
-            const response = await axios.post('https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyDf8IG_gI8Sn3Lt3ukrEtQnw9c9NgfKOEo', {
-                email: details.email,
-                password: details.password,
-                returnSecureToken: true
-            })
-            console.log(response);
-        } catch (error) {
-            console.log(error.response);
-        } finally{
-            setLoader(false);
-        }
-    }
     return (
         <>
             <div className="auth-container">
@@ -75,7 +103,7 @@ const AuthIndex = ({ path }) => {
                     </form>
                 </div>
             </div>
-            {loader&&<Loader/>}
+            {loader && <Loader />}
         </>
     )
 }

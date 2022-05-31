@@ -1,8 +1,10 @@
 import Cart from "../Cart/Cart"
 import SearchBox from "../UI/Search"
 import { Link } from "react-router-dom"
+import { useSelector } from "react-redux"
 
 const Header = () => {
+    const authState = useSelector(state => state.auth);
     return (
         <header>
             <div className="nav-brand">
@@ -22,7 +24,13 @@ const Header = () => {
             <div className="searchBox-container">
                 <SearchBox />
             </div>
-            <Link className="login-btn" to='/login'>Login</Link>
+            {
+                authState && authState.idToken
+                    ?
+                    <button className="login-btn">User Profile</button>
+                    :
+                    <Link className="login-btn" to='/login'>Login</Link>
+            }
             <Cart />
         </header >
     )
