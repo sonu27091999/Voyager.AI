@@ -3,8 +3,18 @@ import Subheader from "./components/Layout/Subheader";
 import Products from "./components/Products/Products";
 import { Routes, Route } from 'react-router-dom'
 import AuthIndex from "./components/Auth";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { checkIsLoggedIn } from "./actions/auth";
 
 function App() {
+  const dispatch=useDispatch();
+ 
+  useEffect(() => {
+    dispatch(checkIsLoggedIn(()=>{}));
+  }, [])
+  
+
   return (
     <div>
       <Header />
