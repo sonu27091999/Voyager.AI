@@ -1,15 +1,18 @@
-const authReducer=(state={},action)=>{
-    const {payload,type}=action;
+const authReducer = (state = {}, action) => {
+    const { payload, type } = action;
     switch (type) {
-        case 'SIGNUP':{
+        case 'SIGNUP': {
             return payload;
         }
-        case 'LOGIN':{
+        case 'LOGIN': {
             return payload;
         }
-        
+        case 'LOGOUT': {
+            return {};
+        }
+
         default:
-           return state;
+            return state;
     }
 }
 

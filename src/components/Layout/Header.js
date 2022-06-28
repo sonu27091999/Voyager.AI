@@ -1,10 +1,15 @@
 import Cart from "../Cart/Cart"
 import SearchBox from "../UI/Search"
 import { Link } from "react-router-dom"
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
+import { logout } from "../../actions/auth"
 
 const Header = () => {
     const authState = useSelector(state => state.auth);
+    const dispatch = useDispatch();
+    const logoutHandler = () => {
+        dispatch(logout());
+    }
     return (
         <header>
             <div className="nav-brand">
@@ -27,7 +32,10 @@ const Header = () => {
             {
                 authState && authState.idToken
                     ?
-                    <button className="login-btn">User Profile</button>
+                    <div className="user-actions">
+                        <button title="User Profile" className="material-icons">account_circle</button>
+                        <button onClick={logoutHandler} title="Logout" className="material-icons">logout</button>
+                    </div>
                     :
                     <Link className="login-btn" to='/login'>Login</Link>
             }
