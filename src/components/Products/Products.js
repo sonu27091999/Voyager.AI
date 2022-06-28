@@ -3,7 +3,7 @@ import ListItem from "./ListItems/ListItem";
 import { useState, useEffect } from 'react';
 import axios from 'axios'
 import Loader from '../UI/Loader';
-import { useParams, useNavigate, useLocation } from 'react-router-dom';
+import { useParams, useNavigate, Navigate, useLocation } from 'react-router-dom';
 
 const Products = () => {
     const [items, setItems] = useState([]);
@@ -12,11 +12,15 @@ const Products = () => {
     const navigate = useNavigate();
     const { search } = useLocation();
     const queryParams = new URLSearchParams(search).get('search');
-
+    // console.log(params,queryParams);
     useEffect(() => {
         async function fecthItem() {
             try {
                 let slug = 'items.json';
+                if(params.category==='login'||params.category==='signup'){
+                    navigate('/');
+                    return;
+                }
                 if (params.category) {
                     slug = `items-${params.category}.json`
                 }
@@ -41,7 +45,8 @@ const Products = () => {
             catch (error) {
                 setLoader(false);
                 console.log("errors : ", error);
-                alert('Some error occured');
+                navigate('/404');
+                // alert('Some error occured');
             }
             finally {
                 setLoader(false);

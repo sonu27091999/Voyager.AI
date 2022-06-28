@@ -1,6 +1,6 @@
-import React, { useState,useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
-import { NavLink, useNavigate } from 'react-router-dom'
+import { NavLink, useNavigate,Navigate } from 'react-router-dom'
 import Loader from '../UI/Loader'
 import { loginWithEmailAndPassword, signupWithEmailPassword } from '../../actions/auth'
 
@@ -20,18 +20,16 @@ const AuthIndex = ({ path }) => {
         })
     }
 
-    useEffect(() => {      
-      return () => {
-        return ()=>{                 // cleanup code for unwanted memory leaks
+    useEffect(() => {
+        return () => {                 // cleanup code for unwanted memory leaks
             setLoader(false);
             setDetails({
-                email:'',
-                password:''
+                email: '',
+                password: ''
             })
         }
-      }
     }, [])
-    
+
 
     const handleSubmission = (e) => {
         e.preventDefault();
@@ -45,7 +43,8 @@ const AuthIndex = ({ path }) => {
                 }
                 else {
                     console.log('Successfully signed up');
-                    navigate('/');
+                    // navigate('/');
+                    <Navigate to='/' replace from='/login'/>
                 }
                 setLoader(false);
             }));

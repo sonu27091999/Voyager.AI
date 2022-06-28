@@ -3,13 +3,14 @@ import Modal from "../UI/Modal"
 import CartItem from "./CartItem"
 import OrderSuccessModal from "../UI/OrderSuccess"
 import { useDispatch, useSelector } from "react-redux"
-import { addItemHandler, clearCartHandler, removeItemHandler } from "../../actions"
+import { addItemHandler, clearCartHandler, placeOrderHandler, removeItemHandler } from "../../actions"
 
 const Cart = () => {
   const [showModal, setShowModal] = useState(false);
   const [orderModal, setOrderModal] = useState(false);
   const items = useSelector(state => state.cart.items);
   const totalAmount = useSelector(state => state.cart.totalAmount);
+  const [orderId, setOrderId] = useState('');
   const dispatch = useDispatch();
 
   const handleModal = () => {
@@ -17,9 +18,24 @@ const Cart = () => {
   }
   const handleOrderModal = () => {
     setShowModal(false);
-    dispatch(clearCartHandler())
+    // dispatch(clearCartHandler());
     setOrderModal(previousState => !previousState);
   }
+  const orderHandler = () => {
+    // dispatch(clearCartHandler());
+    dispatch(placeOrderHandler(response => {
+      console.log(response);
+      if(response.error){
+        alert(response.data.error||'some error occurred, please try again');
+      }
+      else{
+        setOrderId(response.data.name);
+        setShowModal(false);
+        setOrderModal(previous => !previous);
+      }
+    }));
+  }
+
   const dispatchEvents = (type, item) => {
     if (type === 1) {
       dispatch(addItemHandler(item))
@@ -76,13 +92,13 @@ const Cart = () => {
                     <span style={{ marginLeft: "4px" }}>INR</span>
                   </h4>
                 </div>
-                <button onClick={handleOrderModal}>Order Now</button>
+                <button onClick={orderHandler}>Order Now</button>
               </div>
             }
           </div>
         </Modal>
       }
-      {orderModal && <OrderSuccessModal onClose={handleOrderModal} />}
+      {orderModal && <OrderSuccessModal orderId={orderId} onClose={handleOrderModal} />}
     </Fragment>
   )
 }

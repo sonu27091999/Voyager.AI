@@ -1,20 +1,22 @@
+import axios from "axios"
+
 export const addItemHandler = (item) => {
-    return dispatch=>{
+    return dispatch => {
         dispatch({
-            type:"ADD_ITEM",
-            payload:{
-                item:item
+            type: "ADD_ITEM",
+            payload: {
+                item: item
             }
         })
     }
 }
 
-export const removeItemHandler  = (id) => {
-    return dispatch=>{
+export const removeItemHandler = (id) => {
+    return dispatch => {
         dispatch({
-            type:"REMOVE_ITEM",
-            payload:{
-                id:id
+            type: "REMOVE_ITEM",
+            payload: {
+                id: id
             }
         })
     }
@@ -24,5 +26,36 @@ export const clearCartHandler = () => {
         dispatch({
             type: "CLEAR_CART"
         })
+    }
+}
+
+export const placeOrderHandler = (callback) => {
+    return async (dispatch, getState) => {
+        try {
+            const { auth, cart } = getState();
+            if (!auth.idToken) {
+                return callback({
+                    error: true,
+                    data: {
+                        error: "Please login to place the order."
+                    }
+                })
+            }
+            const response = await axios.post(`https://hello-world-52dbb-default-rtdb.firebaseio.com/orders/${auth.localId}.json?auth=${auth.idToken}`, {
+                ...cart
+            })
+            dispatch({
+                type: "CLEAR_CART"
+            })
+            return callback({
+                error: false,
+                data: response.data
+            })
+        } catch (error) {
+            return callback({
+                error: true,
+                ...error.response
+            })
+        }
     }
 }

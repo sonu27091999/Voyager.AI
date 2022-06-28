@@ -4,11 +4,11 @@ const API_KEY = 'AIzaSyDf8IG_gI8Sn3Lt3ukrEtQnw9c9NgfKOEo';
 export const signupWithEmailPassword = (details, callback) => {
     return async (dispatch) => {
         try {
-            const response = await axios.post(`${BASE_URL}/accounts:signUp?key=${API_KEY}`, {
+            const response = await axios.post(`${BASE_URL}accounts:signUp?key=${API_KEY}`, {
                 email: details.email,
                 password: details.password,
                 returnSecureToken: true
-            })
+            });
             // console.log(response);
             dispatch({
                 type: 'SIGNUP',
@@ -65,6 +65,7 @@ export const checkIsLoggedIn = (callback) => {
                 type: 'LOGIN',
                 payload: {
                     idToken: token,
+                    localId: response.data.users[0].localId,
                     ...response.data
                 }
             })
