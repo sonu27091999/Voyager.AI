@@ -1,9 +1,9 @@
 import React from 'react'
 import ListItem from "./ListItems/ListItem";
-import { useState, useEffect } from 'react';
+import { useState, useEffect,useCallback } from 'react';
 import axios from 'axios'
 import Loader from '../UI/Loader';
-import { useParams, useNavigate, Navigate, useLocation } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 
 const Products = () => {
     const [items, setItems] = useState([]);
@@ -12,6 +12,10 @@ const Products = () => {
     const navigate = useNavigate();
     const { search } = useLocation();
     const queryParams = new URLSearchParams(search).get('search');
+
+    const handleNotFount = useCallback(() => {
+        navigate('/404');
+    },[navigate]);
     // console.log(params,queryParams);
     useEffect(() => {
         async function fecthItem() {
@@ -57,11 +61,9 @@ const Products = () => {
             setItems([]);
             setLoader(true);
         }
-    }, [params.category,queryParams]);
+    }, [params.category,queryParams,navigate,handleNotFount]);
 
-    const handleNotFount = () => {
-        navigate('/404');
-    }
+    
 
     return (
         <>

@@ -4,7 +4,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 const SearchBox = () => {
     const navigate = useNavigate();
     const {search:queryString} = useLocation();
-    const queryParams = new URLSearchParams(queryString).get('search');
+    //const queryParams = new URLSearchParams(queryString).get('search');
     const [search, setSearch] = useState('');
 
     useEffect(() => {

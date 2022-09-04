@@ -3,7 +3,7 @@ import Modal from "../UI/Modal"
 import CartItem from "./CartItem"
 import OrderSuccessModal from "../UI/OrderSuccess"
 import { useDispatch, useSelector } from "react-redux"
-import { addItemHandler, clearCartHandler, placeOrderHandler, removeItemHandler } from "../../actions"
+import { addItemHandler, placeOrderHandler, removeItemHandler } from "../../actions"
 
 const Cart = () => {
   const [showModal, setShowModal] = useState(false);

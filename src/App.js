@@ -12,8 +12,7 @@ function App() {
   const authState = useSelector(state => state.auth);
   useEffect(() => {
     dispatch(checkIsLoggedIn(() => { }));
-  }, [])
-
+  }, [dispatch])
 
   return (
     <div>
