@@ -1,7 +1,7 @@
 import Header from "./components/Layout/Header";
 import Subheader from "./components/Layout/Subheader";
 import Products from "./components/Products/Products";
-import { Routes, Route,Navigate } from 'react-router-dom'
+import { Routes, Route, Navigate } from 'react-router-dom'
 import AuthIndex from "./components/Auth";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
